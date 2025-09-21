@@ -1,0 +1,47 @@
+{
+  "totalUsers": 90000,
+  "totalOrders": 12000,
+  "totalSales": 350000,
+  "totalPending": 1800,
+  "previousTotals": {
+    "totalUsers": 48000,
+    "totalOrders": 11000,
+    "totalSales": 330000,
+    "totalPending": 2000
+  },
+"metrics": {
+  "conversionRate": 2.7,
+  "avgOrderValue": 43.5,
+  "returnRate": 1.2,
+  "nps": 72,
+  "topChannel": {
+    "name": "Mobile App",
+    "sales": 200000
+  }
+},
+"previousMetrics": {
+  "conversionRate": 2.5,
+  "avgOrderValue": 41.0,
+  "returnRate": 1.5,
+  "nps": 68,
+  "topChannel": {
+    "name": "Mobile App",
+    "sales": 180000
+  }
+},
+  "salesHistory": [
+    { "month": "January", "days": 31, "baseSales": 1500 },
+    { "month": "February", "days": 28, "baseSales": 1800 },
+    { "month": "March", "days": 31, "baseSales": 2000 },
+    { "month": "April", "days": 30, "baseSales": 2200 },
+    { "month": "May", "days": 31, "baseSales": 2500 },
+    { "month": "June", "days": 30, "baseSales": 2700 },
+    { "month": "July", "days": 31, "baseSales": 3000 },
+    { "month": "August", "days": 31, "baseSales": 2800 },
+    { "month": "September", "days": 30, "baseSales": 2600 },
+    { "month": "October", "days": 31, "baseSales": 2900 },
+    { "month": "November", "days": 30, "baseSales": 3100 },
+    { "month": "December", "days": 31, "baseSales": 3300 }
+  ]
+
+}
