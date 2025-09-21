@@ -23,16 +23,6 @@
     "photoUrl": "https://i.pravatar.cc/150?img=2"
   },
   {
-    "id": 3,
-    "firstName": "Mohammed",
-    "lastName": "Alshehri",
-    "email": "mohammed.alshehri@example.com",
-    "phone": "+966500333333",
-    "role": "Frontend Developer",
-    "gender": "Male",
-    "photoUrl": "https://i.pravatar.cc/150?img=3"
-  },
-  {
     "id": 4,
     "firstName": "Noura",
     "lastName": "Alotaibi",
