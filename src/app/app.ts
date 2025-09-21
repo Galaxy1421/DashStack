@@ -1,5 +1,3 @@
-// Root Angular component (standalone).
-// Handles sidebar state, search functionality, and page navigation tracking.
 import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -7,33 +5,36 @@ import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { filter } from 'rxjs';
 
-// Shape of a search result item (stores found text and its DOM element reference).
+/**
+ * SearchResult: Represents a single search suggestion
+ * - text: the visible text in the element
+ * - element: the DOM node reference (to scroll/highlight when clicked)
+ */
 interface SearchResult {
   text: string;
   element: HTMLElement;
 }
 
 @Component({
-  selector: 'app-root',                 // Root selector <app-root>
-  standalone: true,                     // Standalone component (no NgModule needed)
-  imports: [RouterOutlet, CommonModule, RouterLink, RouterLinkActive, FormsModule], // Required Angular features
-  templateUrl: './app.html',            // External HTML template
-  styleUrls: ['./app.scss']             // External SCSS styles
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, CommonModule, RouterLink, RouterLinkActive, FormsModule],
+  templateUrl: './app.html',
+  styleUrls: ['./app.scss']
 })
 export class App {
-  // Reactive signals for managing UI state
-  sidebarOpen = signal(false);             // Tracks whether sidebar is visible (mobile behavior)
-  sidebarCollapsed = signal(false);        // Tracks whether sidebar is collapsed (desktop behavior)
-  searchQuery = signal('');                // Current text in the search box
-  suggestions = signal<SearchResult[]>([]);// Current search suggestions list
-  currentPage = signal('');                // Holds the current active route/page
+  // Signals (Angular 16 reactive state)
+  sidebarOpen = signal(false);        // Tracks if the sidebar is open (mobile view)
+  sidebarCollapsed = signal(false);   // Tracks if sidebar is collapsed (desktop view)
+  searchQuery = signal('');           // Current search input
+  suggestions = signal<SearchResult[]>([]); // Live search suggestions
+  currentPage = signal('');           // Current route/page
 
-  // Angular dependency injection
   private router = inject(Router);
   private sanitizer = inject(DomSanitizer);
 
   constructor() {
-    // Listen to router navigation changes and update current page signal
+    // Listen to navigation events and update currentPage
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: any) => {
@@ -41,9 +42,11 @@ export class App {
       });
   }
 
-  // Toggle sidebar open/collapse depending on viewport size.
-  // - On mobile (<=768px): fully open/close
-  // - On desktop: collapse/expand (width change)
+  /**
+   * Toggle sidebar behavior based on device:
+   * - Mobile: open/close full sidebar
+   * - Desktop: collapse/expand sidebar width
+   */
   toggleSidebar() {
     if (window.innerWidth <= 768) {
       this.sidebarOpen.update(v => !v);
@@ -52,8 +55,13 @@ export class App {
     }
   }
 
-  // Update the suggestions list based on search query.
-  // Scans text-based elements inside the <main.content> container.
+  /**
+   * updateSuggestions:
+   * Runs every time user types in search input.
+   * Scans the current <main> content area for text
+   * inside headers, paragraphs, table cells, etc.
+   * Returns up to 10 matches that include the query string.
+   */
   updateSuggestions() {
     const q = this.searchQuery().trim().toLowerCase();
     if (!q) {
@@ -65,8 +73,6 @@ export class App {
     if (!main) return;
 
     const results: SearchResult[] = [];
-
-    // Collect matches from headings, paragraphs, spans, table cells, list items, and custom .name/.title elements
     main.querySelectorAll<HTMLElement>('h1,h2,h3,h4,h5,h6,p,span,td,th,li,.name,.title')
       .forEach(el => {
         const text = (el.textContent || '').trim();
@@ -75,13 +81,18 @@ export class App {
         }
       });
 
-    // Keep only top 10 results
     this.suggestions.set(results.slice(0, 10));
   }
 
-  // Scroll to a selected search result and temporarily highlight it.
+  /**
+   * onSearch:
+   * Triggered when user presses Enter OR clicks a suggestion.
+   * - Scrolls to the matched element smoothly
+   * - Temporarily highlights the element (background + outline)
+   * - Clears suggestions + resets search box
+   */
   onSearch(item?: SearchResult) {
-    const target = item ?? this.suggestions()[0];
+    const target = item ?? this.suggestions()[0]; // if user didn’t pick -> use first suggestion
     if (!target) return;
 
     const el = target.element as HTMLElement;
@@ -89,33 +100,38 @@ export class App {
     // Smooth scroll to element
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-    // Inline highlight styling (temporary effect)
+    // Backup old styles
     const prevBg = el.style.backgroundColor;
     const prevOutline = el.style.outline;
     const prevTransition = el.style.transition;
 
-    // Add smooth transition if missing
+    // Add highlight with smooth transition
     el.style.transition = prevTransition
       ? `${prevTransition}, background 0.3s ease, outline-color 0.3s ease`
       : 'background 0.3s ease, outline-color 0.3s ease';
 
-    el.style.backgroundColor = '#fff3cd';   // Light yellow background
-    el.style.outline = '2px solid #facc15'; // Bright yellow outline
+    el.style.backgroundColor = '#fff3cd'; 
+    el.style.outline = '2px solid #facc15'; 
     el.style.borderRadius = el.style.borderRadius || '4px';
 
-    // Revert back after 2 seconds
+    // Remove highlight after 2 seconds
     setTimeout(() => {
       el.style.backgroundColor = prevBg;
       el.style.outline = prevOutline;
       el.style.transition = prevTransition;
     }, 2000);
 
-    // Cleanup: reset suggestions and query
+    // Reset state
     this.suggestions.set([]);
     this.searchQuery.set('');
   }
 
-  // Highlight matching substring in suggestion text with <mark> tag.
+  /**
+   * highlight:
+   * Used in the dropdown suggestion list.
+   * Wraps the matched query in <mark> tags with styles.
+   * Example: "Dashboard" + query "dash" -> "<mark>Dash</mark>board"
+   */
   highlight(text: string): SafeHtml {
     const q = this.searchQuery().trim();
     if (!q) return text;

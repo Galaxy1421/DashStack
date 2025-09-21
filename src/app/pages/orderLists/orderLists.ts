@@ -1,3 +1,23 @@
+/**
+ * Component: OrderListsComponent
+ *
+ * Purpose:
+ * - Display a dynamic list of orders with filters and pagination.
+ * - Allow filtering by type, status, and date (newest, oldest, or custom range).
+ * - Provide pagination and reset functionality.
+ * - Assign badge classes for statuses dynamically.
+ *
+ * Key Features:
+ * - Reactive filters: BehaviorSubjects + combineLatest ensure real-time updates.
+ * - Sorting by date modes: newest, oldest, or range-based.
+ * - Pagination handled reactively with page state.
+ * - Clean reset method to restore default filters.
+ *
+ * Data Flow:
+ * - orders$ → raw orders from DataService
+ * - filteredOrders$ → after applying filters/sorting
+ * - paginatedOrders$ → slice of filtered data based on current page
+ */
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -25,11 +45,13 @@ interface OrderRow {
   styleUrls: ['./orderLists.scss']
 })
 export class OrderListsComponent {
+  // === UI filter states ===
   filterType: string = '';
   filterStatus: string = '';
   filterDateMode: 'none' | 'newest' | 'oldest' | 'range' = 'none';
   rangeDates: Date[] | undefined;
 
+  // === Internal reactive streams for filters ===
   private filterType$ = new BehaviorSubject<string>('');
   private filterStatus$ = new BehaviorSubject<string>('');
   private filterDateMode$ = new BehaviorSubject<'none' | 'newest' | 'oldest' | 'range'>('none');
@@ -37,15 +59,18 @@ export class OrderListsComponent {
   private dateTo$ = new BehaviorSubject<string>('');
   private currentPage$ = new BehaviorSubject<number>(1);
 
+  // === Orders data streams ===
   orders$: Observable<OrderRow[]>;
   filteredOrders$: Observable<OrderRow[]>;
   paginatedOrders$: Observable<OrderRow[]>;
 
+  // === Pagination state ===
   currentPage = 1;
   pageSize = 9;
   startIndex = 0;
   endIndex = 0;
 
+  // === Filter options for UI dropdowns ===
   dateModeOptions = [
     { label: 'Newest → Oldest', value: 'newest' },
     { label: 'Oldest → Newest', value: 'oldest' },
@@ -69,12 +94,13 @@ export class OrderListsComponent {
   ];
 
   constructor(private dataService: DataService) {
-    // ✅ الآن يبدأ بـ [] بدل ما يكون null
+    // Load initial orders (fallback to [] in case of null)
     this.orders$ = this.dataService.getOrders().pipe(
       map((d: any) => d?.orders as OrderRow[] || []),
       startWith([]) 
     );
 
+    // Combine all filter streams + orders stream to produce filtered results
     this.filteredOrders$ = combineLatest([
       this.orders$,
       this.filterType$,
@@ -86,9 +112,13 @@ export class OrderListsComponent {
       map(([orders, type, status, dateMode, from, to]) => {
         let result = orders ?? [];
 
+        // Filter by type
         if (type) result = result.filter(o => o.type === type);
+
+        // Filter by status
         if (status) result = result.filter(o => o.status === status);
 
+        // Sort or filter by date depending on mode
         if (dateMode === 'newest') {
           result.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         } else if (dateMode === 'oldest') {
@@ -106,6 +136,7 @@ export class OrderListsComponent {
       })
     );
 
+    // Pagination logic: slice the filtered results based on currentPage
     this.paginatedOrders$ = combineLatest([
       this.filteredOrders$,
       this.currentPage$
@@ -119,6 +150,7 @@ export class OrderListsComponent {
     );
   }
 
+  /** Triggered when filter values change */
   onFilterChange() {
     this.filterType$.next(this.filterType);
     this.filterStatus$.next(this.filterStatus);
@@ -126,6 +158,7 @@ export class OrderListsComponent {
     this.currentPage$.next(1);
   }
 
+  /** Update date range filter and reset to first page */
   onDateRangeChange(range: Date[] | undefined) {
     if (range && range.length === 2) {
       this.dateFrom$.next(range[0].toISOString());
@@ -134,6 +167,7 @@ export class OrderListsComponent {
     this.currentPage$.next(1);
   }
 
+  /** Reset all filters to defaults */
   resetFilters() {
     this.filterType = '';
     this.filterStatus = '';
@@ -144,9 +178,13 @@ export class OrderListsComponent {
     this.onFilterChange();
   }
 
+  /** Pagination: go to next page */
   nextPage() { this.currentPage$.next(this.currentPage + 1); }
+
+  /** Pagination: go to previous page */
   prevPage() { if (this.currentPage > 1) this.currentPage$.next(this.currentPage - 1); }
 
+  /** Return CSS class name for order status badge */
   statusClass(status: Status | undefined) {
     return status ? status.toLowerCase().replace(' ', '-') : '';
   }

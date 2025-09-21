@@ -1,3 +1,16 @@
+/**
+ * AddMemberComponent
+ * -------------------
+ * This component provides a form for adding a new team member.
+ * 
+ * Features:
+ * - Reactive form with validation (firstName, lastName, email, phone, role, gender, photo)
+ * - Preview uploaded photo or placeholder if none selected
+ * - Uses PrimeNG components (Button, InputText, Select, FileUpload, Toast)
+ * - On successful submit, adds member via TeamService and navigates back to /team
+ * - Cancel button returns to team list without saving
+ */
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -27,8 +40,13 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./addMember.scss']
 })
 export class AddMemberComponent {
+  // Reactive form group
   form: FormGroup;
+
+  // Holds the uploaded photo preview URL
   uploadedPhotoUrl: string | null = null;
+
+  // Dropdown options for gender select
   genders = [
     { label: 'Male', value: 'Male' },
     { label: 'Female', value: 'Female' }
@@ -40,6 +58,7 @@ export class AddMemberComponent {
     private router: Router,
     private messageService: MessageService
   ) {
+    // Initialize the reactive form with validators
     this.form = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -51,6 +70,10 @@ export class AddMemberComponent {
     });
   }
 
+  /**
+   * Handle file selection event from p-fileUpload
+   * - Reads the file as DataURL for image preview
+   */
   onPhotoSelect(event: any) {
     const file = event.files[0];
     if (file) {
@@ -60,10 +83,21 @@ export class AddMemberComponent {
     }
   }
 
+  /**
+   * Dummy upload handler
+   * - Auto-upload is disabled, so this only logs a message
+   */
   onPhotoUpload(event: any) {
     console.log('⚠️ Ignored auto-upload');
   }
 
+  /**
+   * Submit the form
+   * - Validates input
+   * - Adds new member using TeamService
+   * - Shows toast notification
+   * - Redirects back to /team after success
+   */
   onSubmit() {
     if (this.form.invalid) {
       this.messageService.add({
@@ -73,19 +107,30 @@ export class AddMemberComponent {
       });
       return;
     }
+
+    // Build new member object with either uploaded or generated photo
     const newMember = {
       ...this.form.value,
       photoUrl: this.uploadedPhotoUrl || `https://i.pravatar.cc/100?u=${Date.now()}`
     };
+
+    // Call service to add member
     this.teamService.addMember(newMember as any);
+
+    // Success message
     this.messageService.add({
       severity: 'success',
       summary: 'Added',
       detail: 'Member added successfully'
     });
+
+    // Navigate to /team after short delay
     setTimeout(() => this.router.navigate(['/team']), 1000);
   }
 
+  /**
+   * Cancel and go back to team page
+   */
   cancel() {
     this.router.navigate(['/team']);
   }
