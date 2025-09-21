@@ -1,0 +1,100 @@
+<div class="page">
+  <h2 class="page-title">Order Lists</h2>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar-table">
+    <table>
+      <tr>
+        <td class="icon"><i class="pi pi-filter"></i></td>
+        <td class="label">Filter By</td>
+
+        <td>
+          <p-select
+            [options]="dateModeOptions"
+            [(ngModel)]="filterDateMode"
+            (onChange)="onFilterChange()"
+            placeholder="Date Filter"
+          ></p-select>
+        </td>
+
+        <td *ngIf="filterDateMode === 'range'">
+          <p-datePicker
+            selectionMode="range"
+            [(ngModel)]="rangeDates"
+            (ngModelChange)="onDateRangeChange($event)"
+            dateFormat="yy-mm-dd"
+            showIcon="true"
+            appendTo="body"
+          ></p-datePicker>
+        </td>
+
+        <td>
+          <p-select
+            [options]="typeOptions"
+            [(ngModel)]="filterType"
+            (onChange)="onFilterChange()"
+            placeholder="Order Type: All"
+          ></p-select>
+        </td>
+
+        <td>
+          <p-select
+            [options]="statusOptions"
+            [(ngModel)]="filterStatus"
+            (onChange)="onFilterChange()"
+            placeholder="Status: All"
+          ></p-select>
+        </td>
+
+        <td class="reset" (click)="resetFilters()">
+          <i class="pi pi-refresh"></i> Reset Filter
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 80px;">ID</th>
+          <th style="width: 150px;">NAME</th>
+          <th style="width: 250px;">ADDRESS</th>
+          <th style="width: 120px;">DATE</th>
+          <th style="width: 100px;">TYPE</th>
+          <th style="width: 120px;">STATUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of paginatedOrders$ | async">
+          <td>{{ order.id }}</td>
+          <td>{{ order.name }}</td>
+          <td>{{ order.address }}</td>
+          <td>{{ order.date }}</td>
+          <td>{{ order.type }}</td>
+          <td>
+            <span class="badge" [ngClass]="statusClass(order.status)">
+              {{ order.status }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+<!-- Pagination -->
+<div class="pagination" *ngIf="(filteredOrders$ | async)?.length">
+  <span>
+    Showing {{ startIndex + 1 }} - {{ endIndex }}
+    of {{ (filteredOrders$ | async)?.length }}
+  </span>
+  <div class="buttons">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">
+      <i class="pi pi-chevron-left"></i>
+    </button>
+    <button (click)="nextPage()" [disabled]="endIndex >= (filteredOrders$ | async)!.length">
+      <i class="pi pi-chevron-right"></i>
+    </button>
+  </div>
+</div>
