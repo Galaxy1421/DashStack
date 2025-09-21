@@ -1,11 +1,11 @@
 @use '../../../styles.scss' as *;
 
-
-
+/* ====== Page Title ====== */
 .page-title {
   @include page-title;
 }
 
+/* ====== Products Grid Layout ====== */
 .products-grid {
   display: grid;
   grid-template-columns: 1fr; 
@@ -25,6 +25,7 @@
   }
 }
 
+/* ====== Product Card ====== */
 .product-card {
   background: #fff;
   padding: 16px;
@@ -38,6 +39,7 @@
   }
 }
 
+/* ====== Image Section with Navigation Arrows ====== */
 .image-wrapper {
   position: relative;
   text-align: center;
@@ -72,6 +74,7 @@
   color: #555 !important;
 }
 
+/* ====== Card Header (title + favorite heart) ====== */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -99,19 +102,22 @@
   transition: color 0.3s ease;
 
   &.active {
-    color: #e74c3c;       
+    color: #e74c3c; /* Red when active */
   }
 
   &:not(.active):hover {
-    color: #999;           
+    color: #999; /* Hover effect when not active */
   }
 }
+
+/* ====== Price Text ====== */
 .price {
   color: #007bff;
   font-weight: 600;
   margin: 6px 0;
 }
 
+/* ====== Rating Section ====== */
 .rating {
   display: flex;
   align-items: center;
@@ -129,7 +135,7 @@
   margin-right: 2px;
 
   &.filled {
-    color: #f39c12;
+    color: #f39c12; /* Gold for filled stars */
   }
 }
 
@@ -143,6 +149,7 @@
   }
 }
 
+/* ====== Actions Section ====== */
 .actions {
   text-align: left;
 }

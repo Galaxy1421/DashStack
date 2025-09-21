@@ -1,14 +1,16 @@
 @use '../../../styles.scss' as *;
 
+// Page title styles
 .page-title {
   @include page-title;
 }
 
-
+// Container for the form (uses shared mixin)
 .form-container {
   @include form-container;
 }
 
+// Profile photo preview (when image is uploaded)
 .preview {
   display: flex;
   justify-content: center;
@@ -28,6 +30,7 @@
       transform: scale(1.05);
     }
 
+    // Larger preview on medium screens and up
     @include respond(md) {
       width: 160px;
       height: 160px;
@@ -35,6 +38,7 @@
   }
 }
 
+// Placeholder preview (when no photo is uploaded)
 .preview.placeholder {
   width: 120px;
   height: 120px;
@@ -47,6 +51,7 @@
   color: #aaa;
   margin: 0 auto 20px auto;
 
+  // Larger placeholder on medium screens
   @include respond(md) {
     width: 160px;
     height: 160px;
@@ -55,6 +60,7 @@
   }
 }
 
+// Form grid layout (responsive two columns on medium screens)
 .form-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -67,6 +73,7 @@
   }
 }
 
+// Individual form field styles
 .form-field {
   display: flex;
   flex-direction: column;
@@ -76,6 +83,7 @@
     margin-bottom: 8px;
   }
 
+  // Full-width fields span two columns on larger screens
   &.full-width {
     grid-column: span 1;
 
@@ -85,6 +93,7 @@
   }
 }
 
+// Form action buttons container
 .actions {
   text-align: center;
   display: flex;
@@ -92,6 +101,7 @@
   gap: 10px;
   justify-content: center;
 
+  // On medium screens: align buttons to the right in a row
   @include respond(md) {
     text-align: right;
     flex-direction: row;

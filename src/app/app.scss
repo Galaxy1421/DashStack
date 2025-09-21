@@ -1,42 +1,43 @@
-/* ================================================================
-   App Layout (Grid container for the entire app)
-   Defines a 2-column grid: left sidebar + main area (topbar + content)
-================================================================ */
+@use '../styles.scss' as *;
+
+/* ============================= */
+/* App Layout                    */
+/* ============================= */
+/* Grid layout for the whole app: sidebar + topbar + content */
 .app-layout {
   display: grid;
-  grid-template-columns: 240px 1fr;       // Sidebar fixed at 240px, rest auto
-  grid-template-rows: 60px 1fr;           // Topbar fixed at 60px, rest auto
+  grid-template-columns: 240px 1fr; /* Sidebar width + main content */
+  grid-template-rows: 60px 1fr;     /* Topbar height + content */
   grid-template-areas:
     "sidebar topbar"
-    "sidebar content";                   // Named grid areas
+    "sidebar content";
   min-height: 100vh;
   font-family: 'Nunito Sans', sans-serif;
   background: #F5F6FA;
-  transition: all 0.3s ease;             // Smooth transition when layout changes
+  transition: all 0.3s ease;
 }
 
-/* ================================================================
-   Sidebar (left navigation panel)
-   Fixed, scrollable, contains logo, menu, and bottom actions
-================================================================ */
+/* ============================= */
+/* Sidebar                       */
+/* ============================= */
 .sidebar {
   grid-area: sidebar;
   background: #fff;
   display: flex;
   flex-direction: column;
-  position: sticky;                      // Stay fixed during scroll
+  position: sticky;
   top: 0;
   height: 100vh;
   border-right: 1px solid #e0e0e0;
   transition: all 0.3s ease;
   overflow-y: auto;
 
-  /* Hide scrollbar visually but keep scrolling functional */
+  /* Hide scrollbar visually */
   &::-webkit-scrollbar { width: 0px; background: transparent; }
-  scrollbar-width: none;     // Firefox
-  -ms-overflow-style: none;  // Internet Explorer
+  scrollbar-width: none;     
+  -ms-overflow-style: none;  
 
-  /* Logo at the top */
+  /* Logo section */
   .logo {
     text-align: center;
     margin: 20px 0 30px;
@@ -44,19 +45,15 @@
     font-weight: 800;
     transition: opacity 0.3s ease, width 0.3s ease, margin 0.3s ease;
 
-    .logo-dash { color: #3B82F6; }       // Blue part of the logo
-    .logo-stack { color: #202224; }      // Dark text part
+    .logo-dash { color: #3B82F6; }
+    .logo-stack { color: #202224; }
   }
 
-  /* Reset menu styling */
+  /* Menu + bottom menu lists */
   .menu,
-  .bottom-menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
+  .bottom-menu { list-style: none; padding: 0; margin: 0; }
 
-  /* Section title in sidebar */
+  /* Section title inside sidebar */
   .menu-title {
     font-size: 12px;
     font-weight: 600;
@@ -67,12 +64,9 @@
   }
 
   /* Divider line between sections */
-  .divider {
-    border-bottom: 1px solid #e0e0e0;
-    margin: 15px 0;
-  }
+  .divider { border-bottom: 1px solid #e0e0e0; margin: 15px 0; }
 
-  /* Menu items: default state */
+  /* Sidebar menu item */
   .menu-item {
     display: flex;
     align-items: center;
@@ -91,43 +85,42 @@
     i { font-size: 16px; }
     .label { transition: opacity 0.3s ease; }
 
-    /* Hover effect */
+    /* Hover style */
     &:hover {
-      background: #eff6ff;   // Light blue background
-      color: #2563eb;        // Blue text
-      i { color: #2563eb; }  // Blue icon
+      background: #eff6ff;
+      color: #2563eb;
+      i { color: #2563eb; }
     }
 
-    /* Active/selected menu item */
+    /* Active link */
     &.active {
-      background: #3B82F6;   // Solid blue background
-      color: #fff;           // White text
-      i { color: #fff; }     // White icon
+      background: #3B82F6;
+      color: #fff;
+      i { color: #fff; }
     }
   }
 
-  /* Special styling for logout option */
+  /* Special style for logout button */
   .menu-item.logout {
-    color: #dc2626;          // Red text
+    color: #dc2626;
     i { color: #dc2626; }
     &:hover {
-      background: #fee2e2;   // Light red background
+      background: #fee2e2;
       color: #dc2626;
       i { color: #dc2626; }
     }
   }
 }
 
-/* ================================================================
-   Collapsed Sidebar (Desktop mode only)
-   Shrinks sidebar width and hides labels/logo
-================================================================ */
+/* ============================= */
+/* Collapsed sidebar (Desktop)   */
+/* ============================= */
+/* Shrinks sidebar to 100px, hides labels + logo */
 .app-layout.sidebar-collapsed {
-  grid-template-columns: 100px 1fr;       // Sidebar shrinks to 100px
+  grid-template-columns: 100px 1fr;
 
   .sidebar { width: 100px; }
 
-  /* Hide text labels and logo, keep only icons visible */
   .sidebar .label,
   .sidebar .logo {
     opacity: 0;
@@ -138,10 +131,9 @@
   }
 }
 
-/* ================================================================
-   Topbar (header at the top of the page)
-   Contains sidebar toggle, search box, language switcher, notifications, profile
-================================================================ */
+/* ============================= */
+/* Topbar                        */
+/* ============================= */
 .topbar {
   grid-area: topbar;
   background: #fff;
@@ -153,10 +145,10 @@
   justify-content: space-between;
   padding: 0 20px;
   border-bottom: 1px solid #e0e0e0;
-  z-index: 100;                          // Always above content
+  z-index: 100;
   transition: all 0.3s ease;
 
-  /* Left section: sidebar toggle button */
+  /* Left section: hamburger icon */
   .left-section i {
     font-size: 20px;
     color: #202224;
@@ -165,10 +157,12 @@
 
   .hamburger { display: block; font-size: 22px; cursor: pointer; }
 
-  /* Search bar (center) */
+  /* ============================= */
+  /* Search bar                   */
+  /* ============================= */
   .search {
     flex: 1;
-    max-width: 400px;
+    max-width: 400px; /* Full width in desktop */
     margin: 0 20px;
     background: #f5f6fa;
     border: 1px solid #d5d5d5;
@@ -178,11 +172,7 @@
     padding: 6px 12px;
     position: relative;
 
-    i {
-      font-size: 14px;
-      opacity: 0.5;
-      margin-right: 8px;
-    }
+    i { font-size: 14px; opacity: 0.5; margin-right: 8px; }
 
     input {
       flex: 1;
@@ -192,7 +182,7 @@
       font-size: 14px;
     }
 
-    /* Suggestions dropdown below the search bar */
+    /* Suggestions dropdown */
     .suggestions {
       position: absolute;
       top: calc(100% + 4px);
@@ -209,7 +199,6 @@
       max-height: 260px;
       overflow-y: auto;
 
-      /* Dropdown items */
       li {
         padding: 10px 14px;
         font-size: 14px;
@@ -220,30 +209,23 @@
         gap: 8px;
         transition: background 0.2s, padding-left 0.2s;
 
-        &:hover {
-          background: #f3f4f6;   // Light gray hover
-          padding-left: 20px;   // Slight indent effect
-        }
+        &:hover { background: #f3f4f6; padding-left: 20px; }
       }
 
-      /* Scrollbar for dropdown */
       &::-webkit-scrollbar { width: 6px; }
-      &::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 999px;
-      }
+      &::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
     }
   }
 
-  /* Highlight style applied dynamically to content matches */
+  /* Highlight effect when search result is clicked */
   .highlight-search {
-    background: #fff3cd !important;     // Yellow background
-    outline: 2px solid #facc15;         // Strong yellow border
+    background: #fff3cd !important;
+    outline: 2px solid #facc15; 
     border-radius: 4px;
     transition: background 0.3s ease;
   }
 
-  /* <mark> tag styling inside suggestions */
+  /* Marked query in suggestion list */
   mark {
     background: #fde68a;
     color: #b45309;
@@ -252,17 +234,20 @@
     padding: 0 2px;
   }
 
-  /* Right section: language dropdown, notifications, profile */
+  /* ============================= */
+  /* Right Section                 */
+  /* ============================= */
   .right-section {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
+    font-size: 13px;
 
     .language,
     .notifications,
     .profile { cursor: pointer; }
 
-    /* Notification bell with red badge */
+    /* Notifications icon with badge */
     .notifications {
       position: relative;
       .badge {
@@ -271,27 +256,24 @@
         right: -8px;
         background: #f93c65;
         color: #fff;
-        font-size: 12px;
-        font-weight: 700;
+        font-size: 10px;
+        font-weight: 500;
         line-height: 16px;
         padding: 0 5px;
         border-radius: 10px;
       }
     }
 
-    /* User profile (avatar + name + role) */
+    /* Profile dropdown */
     .profile {
       display: flex;
       align-items: center;
-      gap: 8px;
-
+      gap: 6px;
       img { width: 34px; height: 34px; border-radius: 50%; }
-
       .info {
         display: flex;
         flex-direction: column;
-        line-height: 1.2;
-
+        line-height: 1.0;
         .name { font-size: 14px; font-weight: 700; color: #404040; }
         .role { font-size: 12px; font-weight: 600; color: #565656; }
       }
@@ -299,9 +281,9 @@
   }
 }
 
-/* ================================================================
-   Main Content Area
-================================================================ */
+/* ============================= */
+/* Content                       */
+/* ============================= */
 .content {
   grid-area: content;
   padding: 20px;
@@ -309,44 +291,42 @@
   transition: all 0.3s ease;
 }
 
-/* ================================================================
-   Mobile Responsive Styles (max-width: 768px)
-   Sidebar becomes hidden off-canvas and slides in/out
-================================================================ */
+/* ============================= */
+/* Mobile view adjustments       */
+/* ============================= */
 @media (max-width: 768px) {
-  .app-layout {
-    grid-template-columns: 0 1fr;         // Hide sidebar column by default
-  }
+  .app-layout { grid-template-columns: 0 1fr; }
 
+  /* Sidebar hidden by default in mobile */
   .sidebar {
     position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
+    top: 0; bottom: 0; left: 0;
     width: 240px;
     height: 100vh;
-    transform: translateX(-240px);        // Hidden state (slide out)
+    transform: translateX(-240px); 
     transition: transform 0.3s ease-in-out;
   }
 
-  .app-layout.sidebar-open .sidebar {
-    transform: translateX(0);             // Visible when open
-  }
+  /* Sidebar open state */
+  .app-layout.sidebar-open .sidebar { transform: translateX(0); }
 
-  /* Shift topbar + content when sidebar is open */
   .topbar,
-  .content {
-    transition: transform 0.3s ease-in-out;
-  }
+  .content { transition: transform 0.3s ease-in-out; }
 
   .app-layout.sidebar-open .topbar,
-  .app-layout.sidebar-open .content {
-    transform: translateX(232px);
-  }
+  .app-layout.sidebar-open .content { transform: translateX(232px); }
 
-  /* Adjustments: hamburger visible, search hidden on small screens */
   .topbar {
     .hamburger { display: block; }
-    .search { display: none; }
+
+    /* Search bar in mobile */
+    .search {
+      max-width: 100%;   
+      padding: 3px 6px;   
+      border-radius: 14px;
+
+      i { font-size: 13px; margin-right: 6px; }
+      input { font-size: 13px; }
+    }
   }
 }

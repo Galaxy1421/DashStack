@@ -1,14 +1,24 @@
-
 @use '../../../styles.scss' as *;
 
+/* Reuse shared page title style */
 .page-title {
   @include page-title;
 }
 
-.team-container { padding: 20px; }
-.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+/* Container spacing for the whole team page */
+.team-container { 
+  padding: 20px; 
+}
 
-/* Responsive Grid */
+/* Header: flex layout to space title and button */
+.header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 20px; 
+}
+
+/* Responsive grid for team member cards */
 .team-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -21,6 +31,7 @@
   .team-grid { grid-template-columns: 1fr; }
 }
 
+/* Team card: background, shadow, and hover effect */
 .team-card {
   position: relative;
   background: #fff url("/assets/bg-pattern.jpg") center/cover no-repeat;
@@ -35,6 +46,7 @@
   box-shadow: 0 6px 15px rgba(0,0,0,0.25);
 }
 
+/* Hidden action buttons (edit/delete), shown on hover */
 .card-top-actions {
   position: absolute;
   top: 10px;
@@ -51,15 +63,19 @@
   pointer-events: auto;
 }
 
+/* Edit button custom style */
 .edit-btn {
   background-color: #7f8b95bf !important; 
   border: none;
 }
+
+/* Delete button custom style */
 .delete-btn {
   background-color: #e74d3cbf !important; 
   border: none;
 }
 
+/* Team member photo styling */
 .team-card img {
   border-radius: 50%;
   width: 100px;

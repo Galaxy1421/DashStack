@@ -1,14 +1,16 @@
 @use '../../../styles.scss' as *;
 
+/* Page title styles */
 .page-title {
   @include page-title;
 }
 
-
+/* Container for the form */
 .form-container {
   @include form-container;
 }
 
+/* Preview for uploaded profile image */
 .preview {
   display: flex;
   justify-content: center;
@@ -35,6 +37,7 @@
   }
 }
 
+/* Placeholder if no profile image is uploaded */
 .preview.placeholder {
   width: 120px;
   height: 120px;
@@ -55,6 +58,7 @@
   }
 }
 
+/* Grid layout for form fields */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -67,6 +71,7 @@
   }
 }
 
+/* Each form field */
 .form-field {
   display: flex;
   flex-direction: column;
@@ -85,6 +90,7 @@
   }
 }
 
+/* Action buttons (submit + cancel) */
 .actions {
   text-align: center;
   display: flex;
