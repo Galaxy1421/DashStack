@@ -1,0 +1,29 @@
+<div class="team-container">
+<div class="header">
+  <h2 class="page-title">
+    Team Members ({{ (teamService.team$ | async)?.length }})
+  </h2>
+  <button pButton label="Add Now" icon="pi pi-user-plus" class="p-button-info" routerLink="/addMember"></button>
+</div>
+
+  <div class="team-grid">
+    <div class="team-card" *ngFor="let member of teamService.team$ | async">
+      <div class="card-top-actions">
+        <button pButton icon="pi pi-pencil"
+                class="p-button-rounded p-button-sm edit-btn"
+                [routerLink]="['/editMember', member.id]"></button>
+        <button pButton icon="pi pi-trash"
+                class="p-button-rounded p-button-sm delete-btn"
+                (click)="deleteMember(member.id)"></button>
+      </div>
+
+      <img [src]="member.photoUrl || '/assets/default-user.png'" alt="avatar" />
+      <h3>{{ member.firstName }} {{ member.lastName }}</h3>
+      <p>{{ member.role }}</p>
+      <a href="mailto:{{ member.email }}" class="email">{{ member.email }}</a>
+      <p class="phone">{{ member.phone }}</p>
+    </div>
+  </div>
+</div>
+
+<p-toast></p-toast>
