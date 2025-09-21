@@ -1,0 +1,55 @@
+<h2 class="page-title">Add Team Member</h2>
+
+<div class="form-container">
+  <div class="preview" *ngIf="uploadedPhotoUrl; else placeholder">
+    <img [src]="uploadedPhotoUrl" alt="Preview" />
+  </div>
+  <ng-template #placeholder>
+    <div class="preview placeholder"><span class="pi pi-user"></span></div>
+  </ng-template>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-grid">
+      <div class="form-field">
+        <label>First Name</label>
+        <input pInputText formControlName="firstName" />
+      </div>
+      <div class="form-field">
+        <label>Last Name</label>
+        <input pInputText formControlName="lastName" />
+      </div>
+
+      <div class="form-field">
+        <label>Email</label>
+        <input pInputText type="email" formControlName="email" />
+      </div>
+      <div class="form-field">
+        <label>Phone</label>
+        <input pInputText formControlName="phone" />
+      </div>
+
+      <div class="form-field">
+        <label>Position</label>
+        <input pInputText formControlName="role" />
+      </div>
+      <div class="form-field">
+        <label>Gender</label>
+        <p-select formControlName="gender" [options]="genders" optionLabel="label"></p-select>
+      </div>
+
+      <div class="form-field full-width">
+        <label>Upload Photo</label>
+        <p-fileUpload name="photo" mode="basic" chooseLabel="Upload" customUpload="true"
+                      (onSelect)="onPhotoSelect($event)" (uploadHandler)="onPhotoUpload($event)">
+        </p-fileUpload>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button pButton type="submit" label="Add Member" icon="pi pi-check" class="p-button-info"></button>
+      <button pButton type="button" label="Cancel" icon="pi pi-times" class="p-button-secondary" (click)="cancel()"></button>
+    </div>
+  </form>
+</div>
+
+<p-toast></p-toast>
