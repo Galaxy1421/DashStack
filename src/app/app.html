@@ -1,12 +1,15 @@
 <div class="app-layout" [class.sidebar-open]="sidebarOpen()" [class.sidebar-collapsed]="sidebarCollapsed()">
 
-  <!-- Sidebar -->
+  <!-- ================== Sidebar ================== -->
   <aside class="sidebar">
+    <!-- Logo -->
     <div class="logo">
       <span class="logo-dash">Dash</span><span class="logo-stack">Stack</span>
     </div>
 
+    <!-- Main Navigation Menu -->
     <ul class="menu">
+      <!-- Core pages -->
       <li routerLink="/dashboard" routerLinkActive="active" class="menu-item" title="Dashboard">
         <i class="pi pi-chart-bar"></i>
         <span class="label">Dashboard</span>
@@ -32,6 +35,7 @@
         <span class="label">Product Stock</span>
       </li>
 
+      <!-- Divider + Secondary Pages -->
       <div class="divider"></div>
       <span class="menu-title">Pages</span>
 
@@ -69,6 +73,7 @@
       </li>
     </ul>
 
+    <!-- Bottom Sidebar Menu -->
     <div class="divider"></div>
     <div class="bottom-menu">
       <li class="menu-item" title="Settings">
@@ -82,12 +87,14 @@
     </div>
   </aside>
 
-  <!-- Topbar -->
+  <!-- ================== Topbar ================== -->
   <header class="topbar">
     <div class="left-section">
+      <!-- Sidebar toggle button -->
       <i class="pi pi-bars hamburger" (click)="toggleSidebar()"></i>
     </div>
-<!--search bar -->
+
+    <!-- Search Bar -->
     <div class="search">
       <i class="pi pi-search"></i>
       <input type="text" placeholder="Search this page..."
@@ -95,26 +102,29 @@
              (ngModelChange)="searchQuery.set($event); updateSuggestions()"
              (keyup.enter)="onSearch()" />
 
+      <!-- Suggestions Dropdown -->
       <ul class="suggestions" *ngIf="suggestions().length > 0">
         <li *ngFor="let s of suggestions()" (click)="onSearch(s)">
           <span [innerHTML]="highlight(s.text)"></span>
         </li>
       </ul>
     </div>
-
+    <!-- Right Section (Language, Notifications, Profile) -->
     <div class="right-section">
-     <!--language and notification , profile-->
+      <!-- Language Selector -->
       <div class="language">
         <img src="https://flagcdn.com/w20/gb.png" alt="English" />
         <span> English </span>
         <i class="pi pi-chevron-down"></i>
       </div>
 
+      <!-- Notifications -->
       <div class="notifications">
         <i class="pi pi-bell"></i>
         <span class="badge">6</span>
       </div>
 
+      <!-- Profile Dropdown -->
       <div class="profile">
         <img src="https://i.pravatar.cc/40" alt="User" />
         <div class="info">
@@ -126,7 +136,7 @@
     </div>
   </header>
 
-  <!-- Content -->
+  <!-- ================== Main Content ================== -->
   <main class="content" id="mainContent">
     <router-outlet></router-outlet>
   </main>

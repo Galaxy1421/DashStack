@@ -1,13 +1,15 @@
 <div class="page">
   <h2 class="page-title">Order Lists</h2>
 
-  <!-- Filter Bar -->
+  <!-- ================== Filter Bar ================== -->
   <div class="filter-bar-table">
     <table>
       <tr>
+        <!-- Filter icon + label -->
         <td class="icon"><i class="pi pi-filter"></i></td>
         <td class="label">Filter By</td>
 
+        <!-- Date filter (mode: newest, oldest, range) -->
         <td>
           <p-select
             [options]="dateModeOptions"
@@ -17,6 +19,7 @@
           ></p-select>
         </td>
 
+        <!-- Date range picker (only if mode = range) -->
         <td *ngIf="filterDateMode === 'range'">
           <p-datePicker
             selectionMode="range"
@@ -28,6 +31,7 @@
           ></p-datePicker>
         </td>
 
+        <!-- Order type filter -->
         <td>
           <p-select
             [options]="typeOptions"
@@ -37,6 +41,7 @@
           ></p-select>
         </td>
 
+        <!-- Status filter -->
         <td>
           <p-select
             [options]="statusOptions"
@@ -46,6 +51,7 @@
           ></p-select>
         </td>
 
+        <!-- Reset filters -->
         <td class="reset" (click)="resetFilters()">
           <i class="pi pi-refresh"></i> Reset Filter
         </td>
@@ -53,7 +59,7 @@
     </table>
   </div>
 
-  <!-- Orders Table -->
+  <!-- ================== Orders Table ================== -->
   <div class="table-wrapper">
     <table>
       <thead>
@@ -67,6 +73,7 @@
         </tr>
       </thead>
       <tbody>
+        <!-- Render filtered & paginated orders -->
         <tr *ngFor="let order of paginatedOrders$ | async">
           <td>{{ order.id }}</td>
           <td>{{ order.name }}</td>
@@ -83,18 +90,19 @@
     </table>
   </div>
 
-<!-- Pagination -->
-<div class="pagination" *ngIf="(filteredOrders$ | async)?.length">
-  <span>
-    Showing {{ startIndex + 1 }} - {{ endIndex }}
-    of {{ (filteredOrders$ | async)?.length }}
-  </span>
-  <div class="buttons">
-    <button (click)="prevPage()" [disabled]="currentPage === 1">
-      <i class="pi pi-chevron-left"></i>
-    </button>
-    <button (click)="nextPage()" [disabled]="endIndex >= (filteredOrders$ | async)!.length">
-      <i class="pi pi-chevron-right"></i>
-    </button>
+  <!-- ================== Pagination ================== -->
+  <div class="pagination" *ngIf="(filteredOrders$ | async)?.length">
+    <span>
+      Showing {{ startIndex + 1 }} - {{ endIndex }}
+      of {{ (filteredOrders$ | async)?.length }}
+    </span>
+    <div class="buttons">
+      <button (click)="prevPage()" [disabled]="currentPage === 1">
+        <i class="pi pi-chevron-left"></i>
+      </button>
+      <button (click)="nextPage()" [disabled]="endIndex >= (filteredOrders$ | async)!.length">
+        <i class="pi pi-chevron-right"></i>
+      </button>
+    </div>
   </div>
 </div>

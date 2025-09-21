@@ -1,6 +1,8 @@
 <h2 class="page-title">Edit Team Member</h2>
 
 <div class="form-container">
+
+  <!-- Profile preview (shows uploaded photo or fallback placeholder) -->
   <div class="preview" *ngIf="uploadedPhotoUrl; else placeholder">
     <img [src]="uploadedPhotoUrl" />
   </div>
@@ -8,8 +10,11 @@
     <div class="preview placeholder"><span class="pi pi-user"></span></div>
   </ng-template>
 
+  <!-- Reactive form for editing team member -->
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-grid">
+
+      <!-- Basic info fields -->
       <div class="form-field">
         <label>First Name</label>
         <input pInputText formControlName="firstName" />
@@ -19,6 +24,7 @@
         <input pInputText formControlName="lastName" />
       </div>
 
+      <!-- Contact info -->
       <div class="form-field">
         <label>Email</label>
         <input pInputText type="email" formControlName="email" />
@@ -28,6 +34,7 @@
         <input pInputText formControlName="phone" />
       </div>
 
+      <!-- Job info -->
       <div class="form-field">
         <label>Position</label>
         <input pInputText formControlName="role" />
@@ -37,14 +44,21 @@
         <p-select formControlName="gender" [options]="genders" optionLabel="label"></p-select>
       </div>
 
+      <!-- Upload photo -->
       <div class="form-field full-width">
         <label>Change Photo</label>
-        <p-fileUpload name="photo" mode="basic" chooseLabel="Upload" customUpload="true"
-                      (onSelect)="onPhotoSelect($event)" (uploadHandler)="onPhotoUpload($event)">
+        <p-fileUpload 
+          name="photo" 
+          mode="basic" 
+          chooseLabel="Upload" 
+          customUpload="true"
+          (onSelect)="onPhotoSelect($event)" 
+          (uploadHandler)="onPhotoUpload($event)">
         </p-fileUpload>
       </div>
     </div>
 
+    <!-- Form actions -->
     <div class="actions">
       <button pButton type="submit" label="Update Member" icon="pi pi-check" class="p-button-warning"></button>
       <button pButton type="button" label="Cancel" icon="pi pi-times" class="p-button-secondary" (click)="cancel()"></button>
@@ -52,4 +66,5 @@
   </form>
 </div>
 
+<!-- Toast notifications -->
 <p-toast></p-toast>
