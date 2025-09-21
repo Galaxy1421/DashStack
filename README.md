@@ -1,59 +1,68 @@
 # DashStack
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.1.
+A front-end assessment project built with **Angular** as part of an interview task.  
+This is **not a production-ready project**, but rather a demonstration of skills and core concepts.
 
-## Development server
+---
 
-To start a local development server, run:
+## ✨ Features Implemented
+- **Data Layer**
+  - Fetching data via `HttpClient` service
+  - Small mock backend to serve data (for simulation)
+
+- **Tables**
+  - Interactive data tables with **sorting**, **filtering**, and **date-range selection (calendar filter)**
+  - Built using **PrimeNG** components for enhanced UI/UX
+
+- **Charts**
+  - Multiple chart types (bar, line, pie)
+  - **Tooltips** for drill-down functionality
+  - Smooth **animations** for better visualization
+
+- **Interactivity**
+  - Filters (dropdowns, search, calendar)
+  - Sorting and responsive updates
+
+- **Responsiveness**
+  - Mobile, tablet, and desktop views
+  - Layout built with **Flexbox/Grid + SCSS**
+
+- **Testing**
+  - Unit tests for core components and services
+
+- **Best Practices**
+  - Standalone components
+  - Dependency Injection
+  - Clean file structure and maintainable code
+
+---
+
+## ⚠️ Notes
+- This project is for **assessment purposes only**.  
+- It demonstrates the requested functionalities plus extra features (**animations, PrimeNG integration, mock backend**).  
+- It is **not a complete or production-ready application**.
+
+---
+
+## 🚀 Getting Started
+Clone the repository and run locally:
 
 ```bash
+git clone https://github.com/Galaxy1421/DashStack.git
+cd DashStack
+npm install
 ng serve
 ```
+Once the server is running, open your browser and navigate to http://localhost:4200/  
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-```bash
-ng generate component component-name
-```
+## 🔮 Future Improvements
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Dark Mode support
+- More advanced drill-down with modal details
+- Additional chart types and visualizations
+- Extended test coverage
+- Multi-language (i18n) support
