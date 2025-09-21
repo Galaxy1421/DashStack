@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, startWith } from 'rxjs';
 import { DataService } from '../../data.service';
 import { DatePickerModule } from 'primeng/datepicker';
 import { SelectModule } from 'primeng/select';
@@ -69,7 +69,11 @@ export class OrderListsComponent {
   ];
 
   constructor(private dataService: DataService) {
-    this.orders$ = this.dataService.getOrders().pipe(map((d: any) => d.orders as OrderRow[]));
+    // ✅ الآن يبدأ بـ [] بدل ما يكون null
+    this.orders$ = this.dataService.getOrders().pipe(
+      map((d: any) => d?.orders as OrderRow[] || []),
+      startWith([]) 
+    );
 
     this.filteredOrders$ = combineLatest([
       this.orders$,
@@ -80,7 +84,7 @@ export class OrderListsComponent {
       this.dateTo$
     ]).pipe(
       map(([orders, type, status, dateMode, from, to]) => {
-        let result = [...orders];
+        let result = orders ?? [];
 
         if (type) result = result.filter(o => o.type === type);
         if (status) result = result.filter(o => o.status === status);
@@ -143,5 +147,7 @@ export class OrderListsComponent {
   nextPage() { this.currentPage$.next(this.currentPage + 1); }
   prevPage() { if (this.currentPage > 1) this.currentPage$.next(this.currentPage - 1); }
 
-  statusClass(status: Status) { return status.toLowerCase().replace(' ', '-'); }
+  statusClass(status: Status | undefined) {
+    return status ? status.toLowerCase().replace(' ', '-') : '';
+  }
 }
