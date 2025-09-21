@@ -1,0 +1,87 @@
+ <div class="dashboard-page">
+      <h2 class="page-title">Dashboard</h2>
+
+      <!-- Cards -->
+      <section class="cards-scroll" [@listAnimation]="cards?.length" *ngIf="cards$ | async as cards">
+        <article class="stat-card" *ngFor="let c of cards">
+          <div class="card-header">
+            <div class="text-block">
+              <h3>{{ c.title }}</h3>
+              <p class="subtitle">{{ c.subtitle }}</p>
+            </div>
+            <div class="icon-wrap" [ngClass]="c.tint">
+              <i [class]="c.icon"></i>
+            </div>
+          </div>
+          <div class="value">{{ c.value }}</div>
+          <p class="delta">
+            <i class="pi"
+               [ngClass]="c.trend >= 0 ? 'pi-arrow-up-right trend-up' : 'pi-arrow-down-right trend-down'"></i>
+            {{ c.trend | number:'1.0-2' }}%
+            <span class="muted">{{ c.trend >= 0 ? 'Up' : 'Down' }} from {{ c.baseline }}</span>
+          </p>
+        </article>
+      </section>
+
+      <!-- Sales Chart -->
+      <section class="chart-card" *ngIf="salesData.length">
+        <div class="chart-header">
+          <h3>Sales Details</h3>
+          <p-select
+            [options]="monthOptions"
+            [(ngModel)]="selectedMonth"
+            (onChange)="updateChart()"
+            styleClass="month-dropdown"
+            placeholder="Select Month">
+          </p-select>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="salesChart"></canvas>
+        </div>
+      </section>
+
+      <!-- Deals Table -->
+      <section class="deals-card" *ngIf="deals$ | async as deals">
+        <div class="deals-header">
+          <h3>Recent Deals</h3>
+          <p-select
+            [options]="dealMonthOptions"
+            [(ngModel)]="selectedDealMonth"
+            (onChange)="selectedDealMonth$.next(selectedDealMonth)"
+            styleClass="month-dropdown"
+            placeholder="Filter by Month">
+          </p-select>
+        </div>
+
+        <div class="deals-table-wrapper">
+          <table class="deals-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Location</th>
+                <th>Date - Time</th>
+                <th>Pieces</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let d of deals">
+                <td>
+                  <div class="product-cell">
+                    <img *ngIf="d.image" [src]="d.image" alt="{{ d.product }}" class="product-img" />
+                    <span>{{ d.product }}</span>
+                  </div>
+                </td>
+                <td>{{ d.location }}</td>
+                <td>{{ d.date }}</td>
+                <td>{{ d.piece }}</td>
+                <td>{{ d.amount | currency:'USD':'symbol-narrow':'1.0-0' }}</td>
+                <td><span class="status" [ngClass]="d.status">{{ d.status }}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  
