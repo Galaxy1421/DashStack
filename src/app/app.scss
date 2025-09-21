@@ -1,0 +1,352 @@
+/* ================================================================
+   App Layout (Grid container for the entire app)
+   Defines a 2-column grid: left sidebar + main area (topbar + content)
+================================================================ */
+.app-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;       // Sidebar fixed at 240px, rest auto
+  grid-template-rows: 60px 1fr;           // Topbar fixed at 60px, rest auto
+  grid-template-areas:
+    "sidebar topbar"
+    "sidebar content";                   // Named grid areas
+  min-height: 100vh;
+  font-family: 'Nunito Sans', sans-serif;
+  background: #F5F6FA;
+  transition: all 0.3s ease;             // Smooth transition when layout changes
+}
+
+/* ================================================================
+   Sidebar (left navigation panel)
+   Fixed, scrollable, contains logo, menu, and bottom actions
+================================================================ */
+.sidebar {
+  grid-area: sidebar;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  position: sticky;                      // Stay fixed during scroll
+  top: 0;
+  height: 100vh;
+  border-right: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+  overflow-y: auto;
+
+  /* Hide scrollbar visually but keep scrolling functional */
+  &::-webkit-scrollbar { width: 0px; background: transparent; }
+  scrollbar-width: none;     // Firefox
+  -ms-overflow-style: none;  // Internet Explorer
+
+  /* Logo at the top */
+  .logo {
+    text-align: center;
+    margin: 20px 0 30px;
+    font-size: 28px;
+    font-weight: 800;
+    transition: opacity 0.3s ease, width 0.3s ease, margin 0.3s ease;
+
+    .logo-dash { color: #3B82F6; }       // Blue part of the logo
+    .logo-stack { color: #202224; }      // Dark text part
+  }
+
+  /* Reset menu styling */
+  .menu,
+  .bottom-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Section title in sidebar */
+  .menu-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #202224;
+    opacity: 0.6;
+    margin: 10px 20px;
+    text-transform: uppercase;
+  }
+
+  /* Divider line between sections */
+  .divider {
+    border-bottom: 1px solid #e0e0e0;
+    margin: 15px 0;
+  }
+
+  /* Menu items: default state */
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 48px;
+    padding: 0 16px;
+    margin-left: 16px;
+    margin-right: 35px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+
+    i { font-size: 16px; }
+    .label { transition: opacity 0.3s ease; }
+
+    /* Hover effect */
+    &:hover {
+      background: #eff6ff;   // Light blue background
+      color: #2563eb;        // Blue text
+      i { color: #2563eb; }  // Blue icon
+    }
+
+    /* Active/selected menu item */
+    &.active {
+      background: #3B82F6;   // Solid blue background
+      color: #fff;           // White text
+      i { color: #fff; }     // White icon
+    }
+  }
+
+  /* Special styling for logout option */
+  .menu-item.logout {
+    color: #dc2626;          // Red text
+    i { color: #dc2626; }
+    &:hover {
+      background: #fee2e2;   // Light red background
+      color: #dc2626;
+      i { color: #dc2626; }
+    }
+  }
+}
+
+/* ================================================================
+   Collapsed Sidebar (Desktop mode only)
+   Shrinks sidebar width and hides labels/logo
+================================================================ */
+.app-layout.sidebar-collapsed {
+  grid-template-columns: 100px 1fr;       // Sidebar shrinks to 100px
+
+  .sidebar { width: 100px; }
+
+  /* Hide text labels and logo, keep only icons visible */
+  .sidebar .label,
+  .sidebar .logo {
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+}
+
+/* ================================================================
+   Topbar (header at the top of the page)
+   Contains sidebar toggle, search box, language switcher, notifications, profile
+================================================================ */
+.topbar {
+  grid-area: topbar;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-bottom: 1px solid #e0e0e0;
+  z-index: 100;                          // Always above content
+  transition: all 0.3s ease;
+
+  /* Left section: sidebar toggle button */
+  .left-section i {
+    font-size: 20px;
+    color: #202224;
+    cursor: pointer;
+  }
+
+  .hamburger { display: block; font-size: 22px; cursor: pointer; }
+
+  /* Search bar (center) */
+  .search {
+    flex: 1;
+    max-width: 400px;
+    margin: 0 20px;
+    background: #f5f6fa;
+    border: 1px solid #d5d5d5;
+    border-radius: 19px;
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    position: relative;
+
+    i {
+      font-size: 14px;
+      opacity: 0.5;
+      margin-right: 8px;
+    }
+
+    input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 14px;
+    }
+
+    /* Suggestions dropdown below the search bar */
+    .suggestions {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: -1px;
+      right: -1px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      list-style: none;
+      margin: 0;
+      padding: 4px 0;
+      z-index: 300;
+      max-height: 260px;
+      overflow-y: auto;
+
+      /* Dropdown items */
+      li {
+        padding: 10px 14px;
+        font-size: 14px;
+        color: #374151;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.2s, padding-left 0.2s;
+
+        &:hover {
+          background: #f3f4f6;   // Light gray hover
+          padding-left: 20px;   // Slight indent effect
+        }
+      }
+
+      /* Scrollbar for dropdown */
+      &::-webkit-scrollbar { width: 6px; }
+      &::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 999px;
+      }
+    }
+  }
+
+  /* Highlight style applied dynamically to content matches */
+  .highlight-search {
+    background: #fff3cd !important;     // Yellow background
+    outline: 2px solid #facc15;         // Strong yellow border
+    border-radius: 4px;
+    transition: background 0.3s ease;
+  }
+
+  /* <mark> tag styling inside suggestions */
+  mark {
+    background: #fde68a;
+    color: #b45309;
+    font-weight: 600;
+    border-radius: 3px;
+    padding: 0 2px;
+  }
+
+  /* Right section: language dropdown, notifications, profile */
+  .right-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .language,
+    .notifications,
+    .profile { cursor: pointer; }
+
+    /* Notification bell with red badge */
+    .notifications {
+      position: relative;
+      .badge {
+        position: absolute;
+        top: -6px;
+        right: -8px;
+        background: #f93c65;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px;
+        padding: 0 5px;
+        border-radius: 10px;
+      }
+    }
+
+    /* User profile (avatar + name + role) */
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      img { width: 34px; height: 34px; border-radius: 50%; }
+
+      .info {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+
+        .name { font-size: 14px; font-weight: 700; color: #404040; }
+        .role { font-size: 12px; font-weight: 600; color: #565656; }
+      }
+    }
+  }
+}
+
+/* ================================================================
+   Main Content Area
+================================================================ */
+.content {
+  grid-area: content;
+  padding: 20px;
+  background: #f9fafc;
+  transition: all 0.3s ease;
+}
+
+/* ================================================================
+   Mobile Responsive Styles (max-width: 768px)
+   Sidebar becomes hidden off-canvas and slides in/out
+================================================================ */
+@media (max-width: 768px) {
+  .app-layout {
+    grid-template-columns: 0 1fr;         // Hide sidebar column by default
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 240px;
+    height: 100vh;
+    transform: translateX(-240px);        // Hidden state (slide out)
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .app-layout.sidebar-open .sidebar {
+    transform: translateX(0);             // Visible when open
+  }
+
+  /* Shift topbar + content when sidebar is open */
+  .topbar,
+  .content {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .app-layout.sidebar-open .topbar,
+  .app-layout.sidebar-open .content {
+    transform: translateX(232px);
+  }
+
+  /* Adjustments: hamburger visible, search hidden on small screens */
+  .topbar {
+    .hamburger { display: block; }
+    .search { display: none; }
+  }
+}
