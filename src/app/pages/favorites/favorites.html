@@ -1,0 +1,37 @@
+<h2 class="page-title">Favorites</h2>
+
+<div class="products-grid" [@listAnimation]>
+    <div class="product-card" *ngFor="let product of favorites$ | async" [@cardAnimation]>
+        <div class="image-wrapper">
+            <button pButton icon="pi pi-angle-left" class="p-button-rounded p-button-text nav-btn left gray-btn"
+                (click)="prevImage(product)"></button>
+
+            <img class="main-img" [src]="product.images[product.currentIndex || 0]" [alt]="product.title" />
+
+            <button pButton icon="pi pi-angle-right" class="p-button-rounded p-button-text nav-btn right gray-btn"
+                (click)="nextImage(product)"></button>
+        </div>
+
+        <div class="card-header">
+            <h3 class="title">{{ product.title }}</h3>
+            <i [class]="product.isFavorite ? 'pi pi-heart-fill heart-icon active' : 'pi pi-heart heart-icon'"
+                (click)="toggleFavorite(product)">
+            </i>
+        </div>
+
+
+
+       
+        <p class="price">{{ product.price | currency:'USD':'symbol' }}</p>
+
+       
+        <div class="rating">
+            <span *ngFor="let star of getStars(product.rating)" class="star" [class.filled]="star.filled">&#9733;</span>
+            <span class="reviews">({{ product.reviewsCount }})</span>
+        </div>
+
+        <div class="actions">
+            <button class="edit-btn">Edit Product</button>
+        </div>
+    </div>
+</div>
