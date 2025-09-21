@@ -1,0 +1,208 @@
+@use '../../../styles.scss' as *;
+
+.dashboard-page {
+  margin-left: 1rem;
+  padding: 1rem;
+
+  max-width: 1200px;  
+  margin-right: auto;
+
+
+  .page-title {
+  @include page-title;
+}
+}
+
+/* ========== Cards Scroll ========== */
+.cards-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 1rem 3rem 1rem 1rem;
+  scroll-snap-type: x mandatory;
+  max-width: 100%;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 999px;
+  }
+
+  .stat-card {
+    flex: 0 0 auto;
+    max-width: 90%;
+    scroll-snap-align: start;
+
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 6px rgba(0,0,0,.05);
+    transition: transform .2s ease, box-shadow .2s ease;
+
+    &:hover {
+      transform: translateY(-6px) scale(1.02);
+
+      .icon-wrap {
+        transform: scale(1.15); 
+      }
+    }
+  }
+
+  @include respond(sm) {
+    .stat-card { flex: 0 0 22%; max-width: 22%; }
+  }
+
+  @include respond(md) {
+    .stat-card { flex: 0 0 35%; max-width: 35%; }
+  }
+
+  @include respond(lg) {
+    .stat-card { flex: 0 0 25%; max-width:25%; }
+  }
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: .5rem;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.text-block { flex: 1; min-width: 0; }
+h3 { font-size: 1rem; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.subtitle { font-size: 0.8rem; color: #6b7280; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.icon-wrap {
+  width: 66px;
+  height: 66px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: #f9fafb;
+  transform: scale(0.9);
+  transition: transform .3s ease;
+
+  i { font-size: 1.7rem; }
+
+  &.tint-green { color: #16a34a; background: #dcfce7; }
+  &.tint-blue  { color: #2563eb; background: #dbeafe; }
+  &.tint-amber { color: #d97706; background: #fef3c7; }
+  &.tint-pink  { color: #db2777; background: #fce7f3; }
+}
+
+.value { font-size: 1.6rem; font-weight: 700; margin: .15rem 0; color: #111827; }
+.delta { display: flex; align-items: center; gap: .90rem; font-size: .8rem; }
+.trend-up { color: #16a34a; }
+.trend-down { color: #dc2626; }
+.muted { color: #6b7280; }
+
+/* ========== Chart Section ========== */
+.chart-card {
+  margin-top: 2rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,.05);
+
+  max-width: 100%; 
+  .chart-header {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin-bottom: 1rem;
+
+    @include respond(md) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .chart-wrapper {
+    width: 100%;
+    height: 220px;
+
+    @include respond(md) { height: 280px; }
+    @include respond(lg) { height: 320px; }
+    @include respond(xl) { height: 350px; }
+  }
+}
+
+canvas { width: 100% !important; height: 100% !important; }
+:host ::ng-deep .month-dropdown { min-width: 150px; }
+
+/* ========== Deals Section ========== */
+.deals-card {
+  margin-top: 2rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,.05);
+
+  max-width: 100%; 
+
+  .deals-header {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin-bottom: 1rem;
+
+    @include respond(md) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .deals-table-wrapper {
+    max-height: 220px;
+    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: 0.5rem;
+
+    @include respond(2xl) {
+      max-height: 300px;
+    }
+  }
+
+  .deals-table {
+    width: 100%;
+    min-width: 500px;
+    border-collapse: collapse;
+    font-size: .85rem;
+
+    @include respond(md) { font-size: .9rem; }
+    @include respond(2xl) { font-size: 1rem; }
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #f9fafb;
+    }
+
+    th, td {
+      padding: .6rem .8rem;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      white-space: nowrap;
+    }
+  }
+}
+
+.product-cell { display: flex; align-items: center; gap: 0.5rem; }
+.product-img { width: 36px; height: 36px; border-radius: 0.5rem; object-fit: cover; border: 1px solid #eee; }
+
+.status.Delivered { background: #dcfce7; color: #166534; padding: 0.25rem 0.6rem; border-radius: 999px; font-weight: 600; font-size: 0.8rem; }
+.status.Pending   { background: #fef3c7; color: #92400e; padding: 0.25rem 0.6rem; border-radius: 999px; font-weight: 600; font-size: 0.8rem; }
+.status.Shipped   { background: #dbeafe; color: #1e3a8a; padding: 0.25rem 0.6rem; border-radius: 999px; font-weight: 600; font-size: 0.8rem; }
