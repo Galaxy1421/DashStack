@@ -1,1 +1,78 @@
 /* You can add global styles to this file, and also import other style files */
+/* src/styles.scss */
+@use "sass:map";
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap');
+
+
+
+.font-nunito {
+  font-family: 'Nunito Sans', sans-serif;
+}
+
+/* 
+
+
+
+/* ========== Global Breakpoints ========== */
+$breakpoints: (
+  xs: 480px,
+  // Extra small (موبايلات صغيرة جدًا)
+  sm: 640px,
+  // Small
+  md: 768px,
+  // Medium
+  lg: 1024px,
+  // Large
+  xl: 1280px,
+  // Extra large
+  2xl: 1536px // 2x Extra large (شاشات كبيرة جدًا)
+);
+
+@mixin respond($size) {
+  @media (min-width: map.get($breakpoints, $size)) {
+    @content;
+  }
+}
+
+
+@mixin page-title {
+  font-weight: 600;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  color: #202224;
+
+  font-size: 24px; // الافتراضي للموبايل الصغير
+
+  @include respond(sm) {
+    font-size: 24px;
+  }
+
+  @include respond(md) {
+    font-size: 28px;
+  }
+
+  @include respond(lg) {
+    font-size: 32px;
+  }
+}
+
+@mixin form-container {
+  padding: 20px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+  @include respond(md) {
+    padding: 40px;
+    max-width: 800px;
+  }
+
+  @include respond(lg) {
+    max-width: 100%;
+  }
+
+  @include respond(xl) {
+    max-width: 100%;
+  }
+}
