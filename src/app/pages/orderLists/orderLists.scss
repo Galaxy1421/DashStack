@@ -1,0 +1,152 @@
+ @use '../../../styles.scss' as *;
+
+
+ .page { font-family: 'Nunito Sans', sans-serif; margin-left: 0.8rem;  }
+ .page-title {
+  @include page-title;
+}
+
+
+    /* ============================= */
+/* Filter Bar Table */
+/* ============================= */
+.filter-bar-table {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 40px;
+  margin-left: 20px;
+  overflow: visible;
+}
+
+.filter-bar-table table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.filter-bar-table td {
+  border-right: 1px solid #e5e7eb;
+  text-align: center;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #030b1bff;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.filter-bar-table tr:last-child td {
+  border-bottom: none;
+}
+
+.filter-bar-table td:last-child {
+  border-right: none;
+}
+    .filter-bar-table .icon {
+      text-align: center;
+      color: #424448ff;
+      width: 40px;
+    }
+
+    .filter-bar-table .label {
+    font-size: 16px;
+    font-weight: bold;
+    }
+
+    .filter-bar-table .reset {
+      cursor: pointer;
+      color: #dc2626;
+        font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .filter-bar-table .reset:hover {
+      color: #b91c1c;
+    }
+/* ============================= */
+/* Orders Table */
+/* ============================= */
+    /* Table */
+    .table-wrapper {
+      overflow-x: auto;
+       margin-left: 20px;
+        margin-right: 20px;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .table-wrapper::-webkit-scrollbar { display: none; }
+
+    table { width: 100%; border-collapse: collapse; font-family: 'Nunito Sans', sans-serif; }
+    thead { background: #ffffffff; }
+    th {
+      padding: 14px 16px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #202224;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+    }
+    td {
+      padding: 16px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #202224;
+      border-bottom: 1px solid #e5e7eb;
+      height: 56px;
+    }
+      .table-wrapper table tr:last-child td {
+  border-bottom: none;
+}
+
+    /* Badges */
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 30px; font-size: 14px; font-weight: 600; }
+    .completed { background: #d1fae5; color: #065f46; }
+    .processing { background: #ede9fe; color: #5b21b6; }
+    .rejected { background: #fecaca; color: #991b1b; }
+    .on-hold { background: #ffedd5; color: #9a3412; }
+    .in-transit { background: #ffd6faff; color: #bf1da9ff; }
+
+   /* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 20px 0 20px;
+  font-size: 13px;
+  color: #82858dff;
+
+  .buttons {
+    display: flex;       
+    gap: 6px;           
+
+    button {
+      display: flex;              
+      align-items: center;
+      justify-content: center;
+      color: #33373aff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      cursor: pointer;
+      margin-left: 5px;
+      transition: all 0.2s ease;
+
+      i {
+        font-size: 14px;       
+      }
+
+      &:hover:not(:disabled) {
+        background: #f3f4f6;
+      }
+
+      &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
