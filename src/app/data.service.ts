@@ -19,19 +19,19 @@ export class DataService {
   // Returns: Observable<any> that emits the parsed JSON once the HTTP GET completes.
   // Note: consider creating a Dashboard interface to replace 'any' for better type safety.
   getDashboardData(): Observable<any> {
-    return this.http.get('assets/dashboard.json');
+    return this.http.get('/assets/dashboard.json');
   }
 
   // Fetch orders list from a local JSON fixture.
   // Tip: For production, wire this to a real endpoint and add pagination params as needed.
   getOrders(): Observable<any> {
-    return this.http.get('assets/orderLists.json');
+    return this.http.get('/assets/orderLists.json');
   }
 
   // Fetch team members data from assets.
   // Returning 'any' keeps it flexible, but defining a TeamMember interface will improve DX.
   getTeam():Observable<any>{
-    return this.http.get('assets/team.json');
+    return this.http.get('/assets/team.json');
   }
 
   // Demo endpoint: pulls products from the public dummyjson API.
