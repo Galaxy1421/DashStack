@@ -45,19 +45,29 @@ This is **not a production-ready project**, but rather a demonstration of skills
 ---
 
 ## 🚀 Getting Started
-Clone the repository and run locally:
-
+### 1. Clone the repository and install dependencies
 ```bash
 git clone https://github.com/Galaxy1421/DashStack.git
 cd DashStack
 npm install
+```
+### 2. Run the backend
+   ```bash
+node server.js
+```
+The backend will start on port 4000.
+To verify it’s running, open your browser and navigate to:
+http://localhost:4000/api/team
+This endpoint will return the team data in JSON format
+
+### 3. Run the Angular app
+ ```bash
 ng serve
 ```
-Once the server is running, open your browser and navigate to http://localhost:4200/  
+Once the server is running, open your browser and navigate to http://localhost:4200/ 
 
 
 ---
-
 
 ## 🔮 Future Improvements
 
