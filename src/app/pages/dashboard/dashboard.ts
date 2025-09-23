@@ -108,6 +108,16 @@ export class DashboardComponent implements OnInit {
         this.months = this.salesData.map(s => s.month);
         this.monthOptions = this.months.map(m => ({ label: m, value: m }));
 
+        if (this.months.length > 0) {
+          this.selectedMonth = this.months[0];
+
+          setTimeout(() => {
+            this.renderChartIfDataAvailable();
+          });
+        } else {
+          this.selectedMonth = null;
+        }
+
         // Load deals from DataService and decorate with fake details
         const allDeals$ = this.dataService.getProducts(48).pipe(
           map((res: any) =>
@@ -266,5 +276,14 @@ export class DashboardComponent implements OnInit {
   // Calculate percentage trend compared to previous value
   private calcTrend(curr: number, prev: number): number {
     return ((curr - prev) / prev) * 100;
+  }
+
+  private renderChartIfDataAvailable() {
+    if (!this.selectedMonth) return;
+
+    const monthData = this.salesData.find(s => s.month === this.selectedMonth);
+    if (!monthData || !monthData.dailySales?.length) return;
+
+    this.updateChart();
   }
 }
