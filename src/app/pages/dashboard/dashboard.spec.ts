@@ -15,7 +15,7 @@
  * - provideNoopAnimations is used to disable Angular animations in tests.
  */
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { DashboardComponent } from './dashboard';
@@ -68,9 +68,6 @@ class MockDataService {
 }
 
 describe('DashboardComponent', () => {
-  let component: DashboardComponent;
-  let fixture: ComponentFixture<DashboardComponent>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DashboardComponent],
@@ -80,25 +77,33 @@ describe('DashboardComponent', () => {
         { provide: DataService, useClass: MockDataService }
       ]
     }).compileComponents();
-
-    fixture = TestBed.createComponent(DashboardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
   });
+
+  const createComponent = () => {
+    const fixture = TestBed.createComponent(DashboardComponent);
+    const component = fixture.componentInstance;
+    fixture.detectChanges();
+    return { fixture, component };
+  };
 
   // Test 1: Component should be created successfully
   it('should create', () => {
+    const { component } = createComponent();
     expect(component).toBeTruthy();
   });
 
   // Test 2: Page title "Dashboard" should be rendered
-  it('should render page title', () => {
+  it('should render page title', async () => {
+    const { fixture } = createComponent();
+    await fixture.whenStable();
+    fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('.page-title')?.textContent).toContain('Dashboard');
   });
 
   // Test 3: Stat cards should render using mock dashboard data
   it('should render stat cards', async () => {
+    const { fixture } = createComponent();
     await fixture.whenStable();
     fixture.detectChanges();
     const cards = fixture.debugElement.queryAll(By.css('.stat-card'));
@@ -107,12 +112,14 @@ describe('DashboardComponent', () => {
 
   // Test 4: calcTrend should calculate the correct percentage
   it('calcTrend should work correctly', () => {
+    const { component } = createComponent();
     const result = (component as any).calcTrend(200, 100);
     expect(result).toBe(100);
   });
 
   // Test 5: updateChart should create a Chart instance when a month is selected
   it('should update chart when a month is selected', () => {
+    const { component } = createComponent();
     component.salesData = [
       {
         month: 'January',
@@ -139,10 +146,49 @@ describe('DashboardComponent', () => {
 
   // Test 6: Deals table should render rows based on mock product data
   it('should render deals table rows', async () => {
+    const { fixture } = createComponent();
     await fixture.whenStable();
     fixture.detectChanges();
 
     const rows = fixture.debugElement.queryAll(By.css('.deals-table tbody tr'));
     expect(rows.length).toBeGreaterThan(0);
+  });
+
+  // Test 7: Component should select first month and render chart immediately
+  it('should auto select the first month and render the chart on load', waitForAsync(async () => {
+    const fixture = TestBed.createComponent(DashboardComponent);
+    const component = fixture.componentInstance;
+    const updateSpy = spyOn(component, 'updateChart').and.callThrough();
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+    await new Promise(resolve => setTimeout(resolve));
+    fixture.detectChanges();
+
+    expect(component.selectedMonth).toBe('January');
+    expect(updateSpy).toHaveBeenCalled();
+
+    (component as any).chart?.destroy();
+    fixture.destroy();
+  }));
+
+  // Test 8: Guard should prevent chart updates when data is unavailable
+  it('should skip chart updates when sales data is missing', () => {
+    const { component } = createComponent();
+    const updateSpy = spyOn(component, 'updateChart').and.callThrough();
+
+    component.salesData = [
+      {
+        month: 'January',
+        days: 30,
+        baseSales: 0,
+        dailySales: []
+      }
+    ];
+    component.selectedMonth = 'January';
+
+    (component as any).renderChartIfDataAvailable();
+
+    expect(updateSpy).not.toHaveBeenCalled();
   });
 });
