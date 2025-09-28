@@ -28,7 +28,9 @@
     </article>
   </section>
 
-  <!-- Sales Chart Section: line chart with monthly selector -->
+  <!-- =========================
+       Sales Chart Section
+       ========================= -->
   <section class="chart-card" *ngIf="salesData.length">
     <div class="chart-header">
       <h3>Sales Details</h3>
@@ -42,12 +44,25 @@
       </p-select>
     </div>
 
+    <!-- Chart canvas -->
     <div class="chart-wrapper">
       <canvas id="salesChart"></canvas>
     </div>
+
+    <!-- Back button when in drilldown mode -->
+    <div class="chart-actions" *ngIf="drilldownMode">
+      <button pButton type="button"
+              label="Back to Monthly View"
+              icon="pi pi-arrow-left"
+              class="p-button-outlined p-button-sm p-button-primary"
+              (click)="exitDrilldown()">
+      </button>
+    </div>
   </section>
 
-  <!-- Deals Table Section: lists recent deals with filter -->
+  <!-- =========================
+       Deals Table Section
+       ========================= -->
   <section class="deals-card" *ngIf="deals$ | async as deals">
     <div class="deals-header">
       <h3>Recent Deals</h3>
