@@ -118,31 +118,32 @@ describe('DashboardComponent', () => {
   });
 
   // Test 5: updateChart should create a Chart instance when a month is selected
-  it('should update chart when a month is selected', () => {
-    const { component } = createComponent();
-    component.salesData = [
-      {
-        month: 'January',
-        days: 2,
-        baseSales: 100,
-        dailySales: [
-          { day: 1, sales: 120, growth: 20 },
-          { day: 2, sales: 130, growth: 25 }
-        ]
-      }
-    ];
-    component.selectedMonth = 'January';
+it('should update chart when a month is selected', () => {
+  const { component } = createComponent();
+  component.salesData = [
+    {
+      month: 'January',
+      days: 2,
+      baseSales: 100,
+      dailySales: [
+        { day: 1, sales: 120, growth: 20, orders: 10, products: [] },
+        { day: 2, sales: 130, growth: 25, orders: 15, products: [] }
+      ]
+    }
+  ];
+  component.selectedMonth = 'January';
 
-    const canvas = document.createElement('canvas');
-    canvas.id = 'salesChart';
-    document.body.appendChild(canvas);
+  const canvas = document.createElement('canvas');
+  canvas.id = 'salesChart';
+  document.body.appendChild(canvas);
 
-    component.updateChart();
+  component.updateChart();
 
-    expect((component as any).chart).toBeDefined();
+  expect((component as any).chart).toBeDefined();
 
-    document.body.removeChild(canvas);
-  });
+  document.body.removeChild(canvas);
+});
+
 
   // Test 6: Deals table should render rows based on mock product data
   it('should render deals table rows', async () => {
